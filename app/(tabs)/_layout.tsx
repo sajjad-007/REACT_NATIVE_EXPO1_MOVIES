@@ -57,7 +57,7 @@ const _layout = () => {
           title: 'Home',
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} icon={icons.person} title={'home'} />
+            <TabIcon focused={focused} icon={icons.home} title={'home'} />
           ),
         }}
       />
