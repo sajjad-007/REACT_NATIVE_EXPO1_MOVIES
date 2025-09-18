@@ -20,7 +20,7 @@ const SearchBar = ({ onPress, placeholder }: Props) => {
         onPress={onPress}
         placeholder={placeholder}
         value=""
-        onChange={() => {}}
+        onChangeText={() => {}}
         className="flex-1 ml-4 text-white text-lg"
         placeholderTextColor="#A8B5DB"
       />

@@ -5,17 +5,17 @@
 3. customize your metro.congig.js, change your input filed like below
    module.exports = withNativeWind(config, { input: './app/global.css' });
 
-# create (tabs),movies folder and add it to the \_layout.tsx file in our root directory.
+# create (tabs) and movies folder, add it to the \_layout.tsx file in our root directory.
 
 1. <Stack> <Stack.Screen name="(tabs)" option={{headerShown:false}}> </Stack>
 2. <Stack> <Stack.Screen name="movies/[id]" option={{headerShown:false}}> </Stack>
 3. [id].tsx for dynamic route, we will use it for movie's details
 
-# (tabs) folder will organize our navigation files.
+# (tabs) folder will organize our navigation files, (tabs) use for grouping a section.
 
 1. put index.tsx file from root directory to (tabs) folder, index.tsx will be our home page
 2. create \_layout.tsx
-3. create profile,saved,search files
+3. create profile,saved,search files (.tsx)
 4. we have to customize \_layout.tsx, add <Tabs> <Tabs.Screen name="index" option={{title:"Home",headerShown}}/> </Tabs>
 
 # types-> images.d.ts =>
