@@ -8,6 +8,8 @@ export const TMDB_CONFIG = {
 };
 
 export const fetchMovies = async ({ query }: { query: string }) => {
+  //encodeURIComponent makes sure the text is treated as data, not as part of the URL structure.
+  //If you just drop raw text into a URL, spaces, &, =, ?, and other symbols can break it or be misinterpreted.
   const endpoint = query
     ? `${TMDB_CONFIG.BASE_URL}/search/movies?query=${encodeURIComponent(query)}`
     : `${TMDB_CONFIG.BASE_URL}/discover/movie?sort_by=popularity.desc`;
@@ -18,6 +20,7 @@ export const fetchMovies = async ({ query }: { query: string }) => {
   });
 
   if (!response.ok) {
+    //In JavaScript (and React Native), Error is a built-in class that represents an error object.
     throw new Error('Failed to fetch movies');
   }
   const data = await response.json();
