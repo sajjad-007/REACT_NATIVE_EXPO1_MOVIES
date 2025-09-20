@@ -35,3 +35,7 @@
 - Why this is needed
   - TypeScript enforces types, and by default it only understands .ts, .tsx, .js, .jsx.
   - Declaring a module like this is a way to extend TypeScript’s type system to cover non-code assets.
+
+# api.ts, create a custom movie fetching function (TMDB)
+
+# useFetch.ts, create a custom hook for handaling all data,fetching,error and for loading

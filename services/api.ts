@@ -3,7 +3,7 @@ export const TMDB_CONFIG = {
   API_KEY: process.env.EXPO_PUBLIC_API_ACCESS_TOKEN,
   headers: {
     accept: 'application/json',
-    Authorization: `Bearer${process.env.EXPO_PUBLIC_API_ACCESS_TOKEN}`,
+    Authorization: `Bearer ${process.env.EXPO_PUBLIC_API_ACCESS_TOKEN}`,
   },
 };
 
@@ -11,7 +11,7 @@ export const fetchMovies = async ({ query }: { query: string }) => {
   //encodeURIComponent makes sure the text is treated as data, not as part of the URL structure.
   //If you just drop raw text into a URL, spaces, &, =, ?, and other symbols can break it or be misinterpreted.
   const endpoint = query
-    ? `${TMDB_CONFIG.BASE_URL}/search/movies?query=${encodeURIComponent(query)}`
+    ? `${TMDB_CONFIG.BASE_URL}/search/movie?query=${encodeURIComponent(query)}`
     : `${TMDB_CONFIG.BASE_URL}/discover/movie?sort_by=popularity.desc`;
 
   const response = await fetch(endpoint, {

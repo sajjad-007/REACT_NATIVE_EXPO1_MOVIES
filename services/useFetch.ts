@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 //<T>(fetchFunction: () => Promise<T>) means “I accept a fetch function that returns a promise of some type T, and I’ll make sure to return that same type.”
-const useFetch = <T>(thefunction: () => Promise<T>, autoFetch: true) => {
+const useFetch = <T>(thefunction: () => Promise<T>, autoFetch = true) => {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
