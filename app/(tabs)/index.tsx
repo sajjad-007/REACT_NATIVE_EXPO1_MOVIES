@@ -57,7 +57,7 @@ export default function Index() {
         ) : (
           <View className="mt-10 px-2">
             <SearchBar
-              placeholder={'Search your movies'}
+              placeholder="Search your movies"
               onPress={() => {
                 route.push('/search');
               }}
@@ -76,7 +76,7 @@ export default function Index() {
                   gap: 24,
                   marginBottom: 16,
                 }}
-                className="pb-20 "
+                className="pb-20"
                 // scrollEnabled={false}
               />
             </>

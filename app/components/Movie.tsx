@@ -6,11 +6,9 @@ import { Image, Text, TouchableOpacity, View } from 'react-native';
 const Movie = ({
   id,
   title,
-  original_title,
   poster_path,
   release_date,
   vote_average,
-  original_language,
 }: Movie) => {
   return (
     <Link href={`../movies/${id}`} asChild>
