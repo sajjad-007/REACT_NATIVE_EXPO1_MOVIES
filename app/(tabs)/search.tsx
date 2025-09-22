@@ -8,6 +8,7 @@ import Movie from '../components/Movie';
 import SearchBar from '../components/SearchBar';
 
 const search = () => {
+  //state for search query
   const [searchQuery, setSearchQuery] = useState('');
   const {
     data: moviesData,
@@ -16,12 +17,22 @@ const search = () => {
     refetch,
     reset,
   } = useFetch(() => fetchMovies({ query: searchQuery }));
-  //state for search query
+
   useEffect(() => {
-    if (searchQuery) {
-      refetch();
-    }
-  }, [searchQuery]);
+    /**When the function is called, you start a timer (setTimeout) Or
+    When searchQuery changes, start a timer */
+    const timeout = setTimeout(async () => {
+      if (searchQuery.trim()) {
+        await refetch(); // run API call if there's text
+      } else {
+        reset(); // clear results if input is empty
+      }
+      // This only runs after the user stops typing for 500ms
+    }, 500);
+    // Cleanup: if searchQuery changes before 500ms passes,
+    // cancel the old timer so it never runs
+    return () => clearTimeout(timeout);
+  }, [searchQuery]); // runs whenever searchQuery changes
   return (
     <View className="flex-1 bg-primary">
       <Image
@@ -80,6 +91,17 @@ const search = () => {
                 </View>
               )}
           </>
+        }
+        ListEmptyComponent={
+          !loading && !error ? (
+            <View className="flex-1 mt-20 flex items-center justify-center">
+              <Text className="text-xl text-yellow-400 mx-auto font-bold">
+                {searchQuery.trim()
+                  ? 'No movie found!'
+                  : 'Start searching for a movie'}
+              </Text>
+            </View>
+          ) : null
         }
       />
       {/* <Text className="text-white text-sm">search</Text> */}
