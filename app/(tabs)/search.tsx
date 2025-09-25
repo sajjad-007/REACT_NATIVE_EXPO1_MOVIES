@@ -1,6 +1,7 @@
 import { icons } from '@/constants/icons';
 import { images } from '@/constants/images';
 import { fetchMovies } from '@/services/api';
+import { updateSearchCount } from '@/services/appwrite';
 import useFetch from '@/services/useFetch';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, Image, Text, View } from 'react-native';
@@ -21,9 +22,13 @@ const search = () => {
   useEffect(() => {
     /**When the function is called, you start a timer (setTimeout) Or
     When searchQuery changes, start a timer */
+
     const timeout = setTimeout(async () => {
       if (searchQuery.trim()) {
         await refetch(); // run API call if there's text
+        if (moviesData?.length > 0 && moviesData?.[0]) {
+          await updateSearchCount(searchQuery, moviesData[0]);
+        }
       } else {
         reset(); // clear results if input is empty
       }

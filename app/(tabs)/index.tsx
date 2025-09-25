@@ -3,6 +3,7 @@ import { images } from '@/constants/images';
 import { fetchMovies } from '@/services/api';
 import useFetch from '@/services/useFetch';
 import { useRouter } from 'expo-router';
+
 import {
   ActivityIndicator,
   FlatList,
@@ -22,6 +23,9 @@ export default function Index() {
     reset: trendingMovieReset,
     refetch: trendingMovieRefetch,
   } = useFetch(() => fetchMovies({ query: '' }));
+
+  //for check appwrite
+
   return (
     <View className="bg-primary flex-1">
       <Image

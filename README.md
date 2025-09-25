@@ -1,8 +1,8 @@
 ## 1. Navigate Content
 
-- [Installation](#02-installation)
-- [Usage](#03-usage)
-- [Search-functionality](#71-search-functionality)
+- [Installation](#2-installation)
+- [Usage](#3-usage)
+- [Search-functionality](#5-search-functionality)
 
 ## 2. Installation
 
@@ -69,7 +69,8 @@ create api.ts it will be our custom movie fetching function (TMDB)
 create useFetch.ts it will be our a custom hook for handaling all data,fetching,error and for loading
 
 ### 4.3. fetch movies ins index.tsx file,
-   previously we created two files named api.ts for fetching movies and useFetch.ts for for handaling all data,loadin,error,fetch,refetch etc. fetch movies from our api.ts, useFetch.ts hook that we created previously
+
+previously we created two files named api.ts for fetching movies and useFetch.ts for for handaling all data,loadin,error,fetch,refetch etc. fetch movies from our api.ts, useFetch.ts hook that we created previously
 
 ### 4.4. (**Important**) Learn FlatList Component, for rendering movies data
 
@@ -111,3 +112,47 @@ create useFetch.ts it will be our a custom hook for handaling all data,fetching,
     - Before scheduling the new one, React calls the cleanup function → `clearTimeout(timeout)` cancels the previous timer.
     - Only the final keystroke that sits untouched for 500ms allows the timer to complete and trigger `refetch()` or `reset()`.
     - So effectively, no matter how fast the user types, you’ll only run the network call once after they pause for 500ms.
+
+## 6. appwrite.ts
+
+1. setup appwrite
+2. store all credentials to a .env file
+3. create a Client import it from appwrite
+   1. ````
+      const client = new Client()
+      .setEndpoint('https://fra.cloud.appwrite.io/v1')
+      .setProject(process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!)
+      .setPlatform(process.env.EXPO_PUBLIC_APPWRITE_PROJECT_PLATFORM!);
+
+      const tablesDB = new TablesDB(client);```
+      ````
+
+4. to `read` appwrite's database data we use `listRows`
+   1. `````
+      awaittablesDB.listRows({
+         databaseId: DATABASE_ID,
+         tableId: 'metrics',
+         queries: [Query.equal('searchTerm', query)],
+      });````
+      `````
+5. in appwrite's database we can create (`write`) a row `createRow`
+   1. `````
+      await tablesDB.createRow(DATABASE_ID, 'metrics', ID.unique(), {
+        searchTerm: query,
+        count: 1,
+        poster_url: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+        movie_id: movie.id,
+        title: movie.title,
+      });````
+      `````
+6. for update we use `updateRow`
+   1. ````
+      await tablesDB.updateRow(DATABASE_ID, 'metrics', existingMovie.$id, {
+        count: existingMovie.count + 1,
+      })```
+      ````
+7. track the searches made by a user, ( create a async function)
+8. check if a record of that search has is already been stroed
+9. if a document is found increment the search count
+10. if no document is found
+11. create a new document in appwrite database
