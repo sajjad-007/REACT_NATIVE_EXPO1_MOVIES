@@ -26,9 +26,6 @@ const search = () => {
     const timeout = setTimeout(async () => {
       if (searchQuery.trim()) {
         await refetch(); // run API call if there's text
-        if (moviesData?.length > 0 && moviesData?.[0]) {
-          await updateSearchCount(searchQuery, moviesData[0]);
-        }
       } else {
         reset(); // clear results if input is empty
       }
@@ -38,6 +35,13 @@ const search = () => {
     // cancel the old timer so it never runs
     return () => clearTimeout(timeout);
   }, [searchQuery]); // runs whenever searchQuery changes
+
+  //for trending movies
+  useEffect(() => {
+    if (moviesData?.length > 0 && moviesData?.[0]) {
+      updateSearchCount(searchQuery, moviesData[0]);
+    }
+  }, [moviesData]);
   return (
     <View className="flex-1 bg-primary">
       <Image

@@ -4,6 +4,7 @@ import { fetchMovies } from '@/services/api';
 import useFetch from '@/services/useFetch';
 import { useRouter } from 'expo-router';
 
+import { getTrendingMovies } from '@/services/appwrite';
 import {
   ActivityIndicator,
   FlatList,
@@ -14,14 +15,21 @@ import {
 } from 'react-native';
 import Movie from '../components/Movie';
 import SearchBar from '../components/SearchBar';
+import TrendingMovieCart from '../components/TrendingMovieCart';
 export default function Index() {
   const route = useRouter();
   const {
     data: trendingMovie,
-    error: trendingMovieError,
     loading: trendingMovieLoading,
-    reset: trendingMovieReset,
-    refetch: trendingMovieRefetch,
+    error: trendingMovieError,
+  } = useFetch(getTrendingMovies);
+
+  const {
+    data: popularMovie,
+    error: popularMovieError,
+    loading: popularMovieLoading,
+    reset: popularMovieReset,
+    refetch: popularMovieRefetch,
   } = useFetch(() => fetchMovies({ query: '' }));
 
   //for check appwrite
@@ -46,16 +54,16 @@ export default function Index() {
           className="w-18 h-18 mt-20 mb-5 mx-auto"
           resizeMode="cover"
         />
-        {trendingMovieLoading ? (
+        {popularMovieLoading || trendingMovieLoading ? (
           <ActivityIndicator
             size="large"
             color="#0000ff"
             className="mt-10 self-center"
           />
-        ) : trendingMovieError ? (
+        ) : popularMovieError || trendingMovieError ? (
           <View className="flex-1">
             <Text className="text-white text-sm">
-              Error: {trendingMovieError.message}
+              Error: {popularMovieError?.message || trendingMovieError?.message}
             </Text>
           </View>
         ) : (
@@ -66,12 +74,38 @@ export default function Index() {
                 route.push('/search');
               }}
             />
+            {trendingMovie && (
+              <View className="mt-10">
+                <Text className="text-white text-xl font-bold">
+                  Trending movies
+                </Text>
+                <FlatList
+                  //* Render a horizontal list of items.
+                  horizontal
+                  //* Hide the scroll indicator for a clean look.
+                  showsHorizontalScrollIndicator={false}
+                  //* Space each item by 26px without manually inserting a separator.
+                  contentContainerStyle={{
+                    gap: 26,
+                  }}
+                  className="mb-4 mt-6"
+                  data={trendingMovie}
+                  renderItem={({ item, index }) => (
+                    <TrendingMovieCart movie={item} index={index} />
+                  )}
+                  keyExtractor={item => item.$id}
+                  // ItemSeparatorComponent={() => <View className="w-4" />}
+                  // scrollEnabled={false}
+                />
+              </View>
+            )}
+
             <>
-              <Text className="flex-1 text-white text-xl font-bold my-6 capitalize">
-                Popular Movies
+              <Text className=" text-white text-xl font-bold my-6 ">
+                Latest movies
               </Text>
               <FlatList
-                data={trendingMovie}
+                data={popularMovie}
                 renderItem={({ item }) => <Movie {...item} />}
                 keyExtractor={item => item.id.toString()}
                 numColumns={3}
