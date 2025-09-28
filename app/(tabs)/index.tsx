@@ -69,7 +69,7 @@ export default function Index() {
         ) : (
           <View className="mt-10 px-2">
             <SearchBar
-              placeholder="Search your movies"
+              placeholder="Search through 300+ movies online"
               onPress={() => {
                 route.push('/search');
               }}

@@ -69,7 +69,7 @@ const search = () => {
             </View>
             <View className="mt-10 mb-5">
               <SearchBar
-                placeholder="Search your movies"
+                placeholder="Search through 300+ movies online"
                 value={searchQuery}
                 onChangeText={(text: string) => setSearchQuery(text)}
               />
@@ -92,11 +92,13 @@ const search = () => {
               !error &&
               searchQuery.trim() &&
               moviesData?.length > 0 && (
-                <View className="flex-1 flex-row gap-2">
-                  <Text className="text-white text-xl">
-                    Search result showing for:
+                <View className="flex-1 flex-row gap-2 mt-10 mb-7">
+                  <Text className="text-white text-xl font-bold">
+                    Search result showing for
                   </Text>
-                  <Text className="text-green-300 text-xl">{searchQuery}</Text>
+                  <Text className="text-green-300 text-xl font-bold">
+                    {searchQuery}
+                  </Text>
                 </View>
               )}
           </>
