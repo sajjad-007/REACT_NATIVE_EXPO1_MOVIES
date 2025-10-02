@@ -1,5 +1,6 @@
 import { icons } from '@/constants/icons';
 import { fetchMovieDetails } from '@/services/api';
+import { storeFavMovieId } from '@/services/appwrite';
 import useFetch from '@/services/useFetch';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React from 'react';
@@ -29,21 +30,26 @@ interface BoxProps {
   text?: string | number | null;
 }
 const CommonBox = ({ text }: BoxProps) => (
-  <View className="bg-dark-100  rounded-lg flex-row items-center justify-center gap-x-2  w-[190px]">
-    <Text className="text-white text-sm font-semibold capitalize p-2">
-      {text}
-    </Text>
+  <View className="bg-dark-100  rounded-lg flex-row items-center justify-center gap-x-2  py-[6px] px-[10px]">
+    <Text className="text-white text-sm font-semibold capitalize ">{text}</Text>
   </View>
 );
 
 const moviesDetails = () => {
+  // const [value, setValue] = useState(Number);
+
   const router = useRouter();
   const { id } = useLocalSearchParams();
+
   const {
     data: movie,
     loading,
     error,
   } = useFetch(() => fetchMovieDetails(id as string));
+
+  const handleId = (id: number) => {
+    storeFavMovieId(id);
+  };
 
   return (
     <View className="flex-1 bg-primary">
@@ -72,6 +78,18 @@ const moviesDetails = () => {
             </Text>
             {/* •<Text className="text-md text-white"> </Text> */}
             <Text className="text-light-200 text-lg">{movie?.runtime}m</Text>
+            <View>
+              <TouchableOpacity
+                key={movie?.id}
+                onPress={() => handleId(movie?.id ?? 0)}
+              >
+                <Image
+                  source={icons.save}
+                  // className="size-5 absolute top-0 right-2"
+                  tintColor="#fff"
+                />
+              </TouchableOpacity>
+            </View>
           </View>
           <View className="bg-dark-100 p-2 rounded-lg flex-row items-center justify-center gap-x-2 mt-4 mb-6 w-[190px]">
             <Image source={icons.star} className="size-4" resizeMode="cover" />
@@ -100,7 +118,7 @@ const moviesDetails = () => {
           </View>
           {/* Countries */}
 
-          <View className="pb-6">
+          <View>
             <View className="flex-row items-center justify-start gap-4">
               <CommonHeading
                 label="Countries"
